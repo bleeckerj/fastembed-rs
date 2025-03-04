@@ -74,7 +74,7 @@ pub use crate::output::{EmbeddingOutput, OutputKey, OutputPrecedence, SingleBatc
 pub use crate::pooling::Pooling;
 
 // For Text Embedding
-pub use crate::models::text_embedding::EmbeddingModel;
+pub use crate::models::text_embedding::{EmbeddingModel, get_model_info};
 pub use crate::text_embedding::{
     InitOptions, InitOptionsUserDefined, TextEmbedding, UserDefinedEmbeddingModel,
 };

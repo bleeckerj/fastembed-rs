@@ -81,8 +81,43 @@ impl TextEmbedding {
         let model_info = TextEmbedding::get_model_info(&model_name)?;
         let model_file_name = &model_info.model_file;
         
+        /***
+         * This may be able to patch the multiple-downloads issue from hf-hub, but
+         * you'll need to use my slightly modified fork of hb-hub in ~/Code/hb-hub that
+         * just added one public function to the ApiRepo struct.
+        
+        let model_file_reference: PathBuf = if let Some(mut progress) = custom_progress {
+        // First, check if the file exists in the cache
+        if let Some(cached_path) = model_repo.get_if_exists(model_file_name) {
+        // If file exists, report it as already complete to the progress tracker
+        let file_size = std::fs::metadata(&cached_path)
+        .map(|m| m.len() as usize)
+        .unwrap_or(0);
+        
+        // Initialize and immediately finish the progress tracker
+        progress.init(file_size, model_file_name);
+        progress.finish();
+        
+        log::info!("Model {} found in cache, skipping download", model_file_name);
+        cached_path
+        } else {
+        // Not in cache, download with progress tracking
+        model_repo.download_with_progress(
+        model_file_name, 
+        BoxedProgressWrapper(&mut progress)
+        ).context(format!("Failed to retrieve {}", model_file_name))?
+        }
+        } else {
+        // Default path with built-in caching
+        model_repo.get(model_file_name)
+        .context(format!("Failed to retrieve {}", model_file_name))?
+        };
+        */
+        
+        
         // Use custom progress if available, otherwise use default download method
-        let model_file_reference = if let Some(mut progress) = custom_progress {
+        // first check if the model file is available in the cache
+        let model_file_reference: PathBuf = if let Some(mut progress) = custom_progress {
             model_repo.download_with_progress(model_file_name, BoxedProgressWrapper(&mut progress))
             .context(format!("Failed to retrieve {}", model_file_name))?
         } else {
