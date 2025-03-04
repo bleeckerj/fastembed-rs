@@ -80,7 +80,7 @@ impl TextEmbedding {
         
         let model_info = TextEmbedding::get_model_info(&model_name)?;
         let model_file_name = &model_info.model_file;
-        
+        model_repo.get_if_exists(&model_file_name);
         /***
          * This may be able to patch the multiple-downloads issue from hf-hub, but
          * you'll need to use my slightly modified fork of hb-hub in ~/Code/hb-hub that
@@ -113,7 +113,6 @@ impl TextEmbedding {
         .context(format!("Failed to retrieve {}", model_file_name))?
         };
         */
-        
         
         // Use custom progress if available, otherwise use default download method
         // first check if the model file is available in the cache
